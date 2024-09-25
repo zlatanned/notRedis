@@ -29,6 +29,14 @@ class KeyValueStore {
         return `OK`;
     }
 
+    // KEYS command: returns all keys or keys matching a pattern
+    keys(pattern = '*') {
+        const regex = new RegExp('^' + pattern.replace(/\*/g, '.*') + '$');
+        const matchedKeys = [...this.store.keys()].filter(key => regex.test(key));
+
+        return matchedKeys.length ? matchedKeys.join('\n') : '(empty list)';
+    }
+
     // FLUSHALL command: clears the entire store
     clear() {
         this.store.clear();
@@ -60,6 +68,9 @@ class KeyValueStore {
                 return this.del(key);
             case 'FLUSHALL':
                 return this.clear();
+            case 'KEYS':
+                const pattern = key || '*';  // Defaults to '*' if no pattern is provided
+                return this.keys(pattern);
             default:
                 return 'ERROR: Unsupported command';
         }
