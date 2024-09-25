@@ -1,4 +1,8 @@
 const readline = require('readline');
+const KeyValueStore = require('./store');
+
+// Initialize the KeyValueStore
+const store = new KeyValueStore();
 
 // Setup readline interface for command-line input
 const rl = readline.createInterface({
@@ -20,6 +24,10 @@ rl.on('line', (line) => {
     rl.close();
     return;
   }
+
+  // Execute the command and print the result
+  const result = store.executeCommand(command);
+  console.log(result);
 
   // Prompt the user for the next command
   rl.prompt();
