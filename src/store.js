@@ -20,6 +20,21 @@ class KeyValueStore {
         return this.store.get(key);
     }
 
+    // DEL command: deletes a key
+    del(key) {
+        if (!this.store.has(key)) {
+            return `ERROR: Key "${key}" does not exist`;
+        }
+        this.store.delete(key);
+        return `OK`;
+    }
+
+    // FLUSHALL command: clears the entire store
+    clear() {
+        this.store.clear();
+        return `OK`;
+    }
+
     // Executes a command based on the input string
     executeCommand(command) {
         const parts = command.trim().split(' ');
@@ -38,6 +53,13 @@ class KeyValueStore {
                     return 'ERROR: GET command requires a key';
                 }
                 return this.get(key);
+            case 'DEL':
+                if (!key) {
+                    return 'ERROR: DEL command requires a key';
+                }
+                return this.del(key);
+            case 'FLUSHALL':
+                return this.clear();
             default:
                 return 'ERROR: Unsupported command';
         }
