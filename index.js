@@ -1,5 +1,5 @@
 const readline = require('readline');
-const KeyValueStore = require('./store');
+const KeyValueStore = require('./src/store');
 
 // Initialize the KeyValueStore
 const store = new KeyValueStore();
